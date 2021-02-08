@@ -1,0 +1,13 @@
+﻿"Symbol";"Value";"Unit";
+"TraceParts.PartNumber";"50-01072016-076851";"";
+"REFERENCE";"SC25UU";"";
+"TraceParts.PartTitle";"Linear Motion Ball Bearing Slide Units (Standard/Double-Wide/Shorten Type)";"";
+"TraceParts.InstanceId";"50-01072016-0768514YZV6O0M0Q5DLMP0NHUYSI35I";"";
+"DESIGN";"Linear Motion Ball Bearing Series,Standard Type SC25UU";"";
+"TraceParts.PartStatus";"Published";"";
+"TraceParts.PartStatusId";"";"";
+"SUPPLIER";"Ningbo Meiyate";"";
+"TraceParts.PartVersion";"1.2.0";"";
+"TRACEPARTS";"TRACEPARTS";"";
+"TraceParts.PartLanguage";"en";"";
+"TraceParts.ClassPath";"NINGBO_MEIYATE:/ROOT/C21/C21.T04/C21.T04.T02/50-01072016-076851";"";

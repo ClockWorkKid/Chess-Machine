@@ -1,0 +1,13 @@
+﻿"Symbol";"Value";"Unit";
+"TraceParts.PartNumber";"50-02092016-095947";"";
+"REFERENCE";"SK25";"";
+"TraceParts.PartTitle";"SK Block Shaft Support";"";
+"TraceParts.InstanceId";"50-02092016-095947B41KHVN58RJ8EOJX6ZRXA23XM";"";
+"DESIGN";"SK Block Shaft Support SK25";"";
+"TraceParts.PartStatus";"Published";"";
+"TraceParts.PartStatusId";"";"";
+"SUPPLIER";"Shenzhen Weiyuan Precision Technology Co.Ltd";"";
+"TraceParts.PartVersion";"1.0.6";"";
+"TRACEPARTS";"TRACEPARTS";"";
+"TraceParts.PartLanguage";"en";"";
+"TraceParts.ClassPath";"SHENZHEN_WEIYUAN:/F_SHENZHEN_WEIYUAN/SHENZHEN_WEIYUAN.030/50-02092016-095947";"";
