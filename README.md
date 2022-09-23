@@ -4,7 +4,7 @@ We implemented a chess playing robot that uses an XY plotter machine for manipul
 Demonstration video:
 https://youtu.be/TBJXJzK3z6o
 
-[<img src="https://i.ytimg.com/vi/TBJXJzK3z6o/maxresdefault.jpg" width="50%">](https://www.youtube.com/watch?v=TBJXJzK3z6o "Now in Android: 55")
+[<img src="https://i.ytimg.com/vi/TBJXJzK3z6o/maxresdefault.jpg" width="50%">](https://www.youtube.com/watch?v=TBJXJzK3z6o "Click on the image to watch video!")
 
 
 ## Contents
@@ -34,12 +34,43 @@ Here is a list of materials used for building the chess machine
 ## Working Procedure
 The chess machine has an image based input, a chess engine that works in tandem with MATLAB as the processing unit, and the physical XY plotter that acts as the ouput.
 
-### Detection of Chess Pieces 
+### Detection of Board and Chess Pieces
+
+When a game session starts, the interface prompts the user with a view from the webcam for cropping out the board region. This could be done automatically, but we kept it manual for better precision. The user can crop out the bounding box of the actual board region from the snapshot - this bounding box helps greatly in the detection of chess pieces. The bounding box can be converted to a 8x8 grid that represents the chess board as a table.
+
+We made the board red and blue, and the chess pieces are black and white - this made the overall detection process much easier. The board can be detected using red and blue channels of the RGB image. The white and black chess pieces can be detected using the brightness level. Problem arises when there is overbright or shadowed regions in the chess board that messes with the detection of black and white pieces. For solving this, we trained a regression model for multi-class classification of colors in the board. First, using the "calibrate_samples3.m" funciton multiple samples of red, blue, white and black regions are sampled and then converted to a very small dataset. Then "myOneVsAll.m" funciton is used to trained the logistic regression network for a multi-class classification of color pixels on the chess board. After each pixel is identified as a separate color, we convert the natural board color into a more uniform color distribution where the chess pieces can be more accurately identified. 
+
+In the "get_board3.m" function, an image sample taken by the webcam is first passed through the logistic regression network and then the color channels are used to seperate red, blue, white and black layers.
+
+```
+pixels = [ones(size(R)) , R , G , B] ; % unrolled rgb matrix
+colors = 1./(1+exp(-(pixels*all_theta'))) > logistic_thres ; % logistic regression prediction
+```
+
+White pieces are shown as regions of higher brightness, and black pieces are shown as regions of lower brightness. These are represented as two separate masks, and after morphological opening of these masks and detecting regions, the location of each chess piece can be seen by the computer. 
+```
+WHITE = imopen(WHITE,strel('disk',noise));
+WHITE = ~imopen(~WHITE,strel('disk',noise));
+BLACK = imopen(BLACK,strel('disk',noise));
+BLACK = ~imopen(~BLACK,strel('disk',noise));
+
+whitePieces = imresize(imcrop(WHITE,stats.BoundingBox),[640 640]);
+blackPieces = imresize(imcrop(BLACK,stats.BoundingBox),[640 640]);
+
+%% Identifying objects
+
+detect_white = regionprops(whitePieces,'BoundingBox','Centroid','Area');
+detect_black = regionprops(blackPieces,'BoundingBox','Centroid','Area');
+
+```
 
 <figure align="center">
-    <img src="Sample Game Frames/image (1).jpg" alt="drawing" width="400"/>
-    <figcaption>Board View</figcaption>
+    <img src="Images/perception" alt="drawing" width="400"/>
+    <figcaption>Perception framework</figcaption>
 </figure>
+
+The region detection function returns the centroids of each of the chess pieces, and we already know the bounding box of the entire board. The board bounding box is converted to a grid of 8x8 and the chess pieces are placed within that grid to know the board positions that are occupied by pieces in a tabular form. Using knowledge of the previous board configuration and comparing it with the current board configuration, we can understand which piece was recently moved. This information is then passed to the custom chess manager that retains memory of the board and checks for validity of moves. 
+
 
 ### Interpreting Board Configuration
 
@@ -54,7 +85,7 @@ The chess machine has an image based input, a chess engine that works in tandem 
 
 A video demonstration of the internals of the XY plotter. https://youtube.com/shorts/JwAQECdfFwo
 
-[<img src="https://i.ytimg.com/vi/JwAQECdfFwo/maxresdefault.jpg" width="50%">](https://www.youtube.com/watch?v=JwAQECdfFwo "Now in Android: 55")
+[<img src="https://i.ytimg.com/vi/JwAQECdfFwo/maxresdefault.jpg" width="50%">](https://www.youtube.com/watch?v=JwAQECdfFwo "Click on the image to watch video!")
 
 <!-- 
 <figure align="center">
