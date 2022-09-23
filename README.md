@@ -65,20 +65,41 @@ detect_black = regionprops(blackPieces,'BoundingBox','Centroid','Area');
 ```
 
 <figure align="center">
-    <img src="Images/perception" alt="drawing" width="400"/>
+    <img src="Images/perception.jpg" alt="drawing" width="400"/>
     <figcaption>Perception framework</figcaption>
 </figure>
 
 The region detection function returns the centroids of each of the chess pieces, and we already know the bounding box of the entire board. The board bounding box is converted to a grid of 8x8 and the chess pieces are placed within that grid to know the board positions that are occupied by pieces in a tabular form. Using knowledge of the previous board configuration and comparing it with the current board configuration, we can understand which piece was recently moved. This information is then passed to the custom chess manager that retains memory of the board and checks for validity of moves. 
 
 
-### Interpreting Board Configuration
+### Interpreting Board Configuration and Generating Moves
 
-### Generating Moves
+A generic chess game starts from a single position. The perception framework can identify the pieces on the board as black and white pieces only. We detect each piece by observing the displacement between two consecutive snapshots. This helps in determining piece movement, captures etc. The move is then passed to our own implementation of chess logic, that exports the current board configuration into a text format readable by the Stockfish chess engine. 
 
-### Motor Driver
+<figure align="center">
+    <img src="Images/detection_samples.jpg" alt="drawing" width="400"/>
+    <figcaption>Detecting moves and passing to stockfish</figcaption>
+</figure>
 
-### Moving the Pieces
+```
+board_new = get_board3(snapshot(cam));
+difference_array = xor(board_prev,board_new);
+
+%% implementation of chess logic to detect legality of move
+y = checkLegal(b_board, difference_array);
+
+%% update the current board configuration
+update(b_board, difference_array)
+
+%% convert to stockfish readable format
+fenString = convert_to_fen(b_board)
+pass_to_stockfish(fenString)
+```
+
+Stockfish can produce the next best move when any board configuration is passed as an input. We then apply a very simple path planning algorithm and send commands to the stepper motors via arduino to move around chess pieces as required by the move.
+
+### Moving the Pieces Around
+
 
 
 ## Hardware Setup

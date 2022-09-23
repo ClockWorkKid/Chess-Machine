@@ -1,0 +1,15 @@
+The first function to be used is 
+
+>> calibrate_sample();
+
+then a file named "calib_data.mat" will be created in the work directory
+you have to use "calibrate_sample()" at least once before other stuff
+
+now run
+
+>> get_board(1)
+
+this returns the matrix of the first board and shows the detected image
+
+Your job is to run "get_board(i)" sequentially until the game ends 
+and then convert the whole game to a "fen" format
