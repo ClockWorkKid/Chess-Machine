@@ -100,20 +100,55 @@ Stockfish can produce the next best move when any board configuration is passed 
 
 ### Moving the Pieces Around
 
+Say, we want to move a piece from (x1, y1) to (x2, y2). Pieces normally rest at the center of each block. Since the chess machine drags objects magnetically from below the board, direct line movement from block to block would result in conflict between pieces. To solve this, we drag the pieces along the cell borders. When a piece is to be moved, the XY plotter first grabs the piece from the center of a cell, drags it to the corner of the cell, and moves it along the cell edges as shown in the picture. After reaching the destination cell, it places it in the center of the 
+target cell. When a piece is to be captured by the machine, the robot would first grab the captured piece, take it outside the chess board, and then replace the target position with the capturing piece. 
+
+
+<figure align="center">
+    <img src="Images/moving.jpg" alt="drawing" width="400"/>
+    <figcaption>Moving around pieces</figcaption>
+</figure>
+
 
 
 ## Hardware Setup
 
-A video demonstration of the internals of the XY plotter. https://youtube.com/shorts/JwAQECdfFwo
+We made initial planning of the hardware using SolidWorks, keeping in mind the use of PVC as the base material for our setup. Some of the dimensions were later changed during implementation. These designs are available in the CAD folder.
+
+<figure align="center">
+    <img src="Images/cad.gif" alt="drawing" width="400"/>
+    <figcaption>SolidWorks Design.</figcaption>
+</figure>
+
+The axes move on the nylon rails with the help of linear bearings. As pulleys for the stepper motor belts, we had used regular ball bearings. A servo was placed on the second axis, and it had a magnet attached to the tip. A video demonstration of the internals of the XY plotter after the motors were powered: https://youtube.com/shorts/JwAQECdfFwo
 
 [<img src="https://i.ytimg.com/vi/JwAQECdfFwo/maxresdefault.jpg" width="50%">](https://www.youtube.com/watch?v=JwAQECdfFwo "Click on the image to watch video!")
 
-<!-- 
+The hardware side of things is connected to Arduino (Arduino Stepper Code > xyplotter3). MATLAB communicates with Arduino via the Serial port and sends commands to it for moving the motors. Arduino moves the axes by switching the poles of the stepper motors. We manually calculated the number of steps required for the requried XY motion. As for the motor driver, we could have used dedicated ICs, but building the motor driver using MOSFETs was quite rewarding. The final circuit is placed inside a little white box to keep things neat. The motors were powered using a cheap computer PSU.
+
 <figure align="center">
-    <img src="screenshots/hardware/screw.jpg" alt="drawing" width="400"/>
-    <figcaption>Each key has a screw through it, and a wire connects each screw to veroboard 1 (veroboard 1 pulls down all the inputs to ground)</figcaption>
+    <img src="Images/stepper_driver.jpg" alt="drawing" width="400"/>
+    <figcaption>Motor Driver Schematics.</figcaption>
 </figure>
--->
+
+## Gallery
+
+<figure align="center">
+    <img src="Images/bokeh.jpg" alt="drawing" width="400"/>
+    <figcaption>Starting the build</figcaption>
+</figure>
+
+<figure align="center">
+    <img src="Images/sim2real.jpg" alt="drawing" width="400"/>
+    <figcaption>Bringing to reality</figcaption>
+</figure>
+
+<figure align="center">
+    <img src="Images/final_setup.jpg" alt="drawing" width="400"/>
+    <figcaption>Setup for project demonstration</figcaption>
+</figure>
+
+
 
 ## Discussion
 
